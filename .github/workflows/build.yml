@@ -1,0 +1,72 @@
+name: Build and Release
+
+# Only runs
+# - after PRs have been merged into master
+# - when a user specifically requests the workflow to run on a branch
+on:
+  workflow_dispatch:
+  push:
+    branches: master
+
+jobs:
+  checkversion:
+    name: Check if version has corrosponding tag
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      dobuild: ${{ steps.dobuild.outputs.dobuild }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read package.json
+        id: package
+        uses: gregoranders/nodejs-project-info@v0.0.21
+
+      - name: Retrieve package.json version
+        id: version
+        run: echo "version=${{ steps.package.outputs.version }}" >> $GITHUB_OUTPUT
+
+      - name: 'Check: package version has corrosponding git tag'
+        id: dobuild
+        shell: bash
+        run: echo dobuild=$(git show-ref --tags --verify --quiet -- "refs/tags/v${{ steps.version.outputs.version }}" && echo 0 || echo 1) >> $GITHUB_OUTPUT
+
+  build:
+    name: 'Build'
+    needs: [checkversion]
+    if: needs.checkversion.outputs.dobuild == 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Create a new branch
+        run: git checkout -b v${{ needs.checkversion.outputs.version }}
+
+      - name: Update .gitignore
+        run: |
+          rm .gitignore
+          echo -c "node_modules/" >> .gitignore
+          git add .
+          git commit -m "chore: Update .gitignore"
+
+      - name: Setup Nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Project Dependencies
+        run: npm install
+
+      - name: Build files
+        run: npm run build
+
+      - name: Commit built files
+        run: |
+          git add .
+          git commit -m "build"
+          git push -u origin v${{ needs.checkversion.outputs.version }}
