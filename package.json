@@ -1,0 +1,23 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "esbuild ./src/index.ts --format=esm --outfile=./dist/index.mjs && esbuild ./src/index.ts  --format=cjs --outfile=./dist/index.js"
+    },
+    "exports": {
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.7.0",
+        "@types/eslint__js": "^8.42.3",
+        "@types/node": "^20.14.12",
+        "esbuild": "^0.23.0",
+        "eslint": "^8.57.0",
+        "typescript": "^5.5.4",
+        "typescript-eslint": "^7.17.0"
+    },
+    "volta": {
+        "node": "20.16.0"
+    }
+}
