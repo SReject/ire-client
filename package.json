@@ -1,20 +1,11 @@
 {
     "private": true,
-
     "name": "ire-client",
     "author": "SReject",
     "description": "IRE client",
     "version": "1.0.0",
     "license": "ISC",
-
     "type": "module",
-    "scripts": {
-        "lint": "eslint",
-        "build:esm": "esbuild ./index.ts --format=esm --outfile=./index.mjs --packages=external",
-        "build:common": "esbuild ./index.ts  --format=cjs --outfile=./index.cjs --packages=external",
-        "build:types": "tsc --emitDeclarationOnly --outDir .",
-        "build": "npm run lint && npm run build:types && npm run build:esm && npm run build:common"
-    },
     "exports": {
         "import": "./index.mjs",
         "require": "./index.cjs",
@@ -26,15 +17,6 @@
         "./index.cjs",
         "./index.d.ts"
     ],
-    "devDependencies": {
-        "@eslint/js": "^9.7.0",
-        "@types/eslint__js": "^8.42.3",
-        "@types/node": "^20.14.12",
-        "esbuild": "^0.23.0",
-        "eslint": "^8.57.0",
-        "typescript": "^5.5.4",
-        "typescript-eslint": "^7.17.0"
-    },
     "volta": {
         "node": "20.16.0"
     }
