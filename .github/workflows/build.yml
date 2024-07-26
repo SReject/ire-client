@@ -46,7 +46,7 @@ jobs:
 
 
       - name: Create a new branch
-        run: git checkout -b v${{ needs.checkversion.outputs.version }}
+        run: git checkout -b release/v${{ needs.checkversion.outputs.version }}
 
       - name: Update .gitignore
         run: |
@@ -71,4 +71,6 @@ jobs:
         run: |
           git add .
           git commit -m "build"
-          git push -u origin v${{ needs.checkversion.outputs.version }}
+          git push -u origin release/v${{ needs.checkversion.outputs.version }}
+          git tag -a v${{ needs.checkversion.outputs.version }} -m "Release"
+          git push origin v${{ needs.checkversion.outputs.version }}
