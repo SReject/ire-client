@@ -2,9 +2,10 @@
     "compilerOptions": {
         "module": "NodeNext",
         "target": "ESNext",
-        "baseUrl": "."
+        "baseUrl": ".",
+        "declaration": true
     },
     "files": [
-        "./src/index.ts"
+        "index.ts"
     ]
 }

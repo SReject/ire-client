@@ -2,7 +2,7 @@ interface IREMessage {
     type: "invoke" | "response" | "event";
     name: string;
     id: string | number;
-    data: any
+    data: unknown
 }
 type EventHandler = (...args: unknown[]) => void;
 type EventListener = { once: boolean, handler: EventHandler };
@@ -246,7 +246,7 @@ export default class IREClient {
                 const processing = { pending: true };
                 this.$processing.add(processing);
                 try {
-                    const result = await (<MethodHandler>this.$methods.get(name))(...(body || []));
+                    const result = await (<MethodHandler>this.$methods.get(name))(...<Array<unknown>>(body || []));
                     if (!processing.pending) {
                         return;
                     }
@@ -305,6 +305,7 @@ export default class IREClient {
 
     /** Unhooks from the transport */
     unhook() {
+        //eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const [key, value] of this.$pending) {
             value.reject(new Error('TRANSPORT_CLOSED'));
         }
