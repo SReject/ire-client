@@ -44,6 +44,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+
       - name: Create a new branch
         run: git checkout -b v${{ needs.checkversion.outputs.version }}
 
@@ -51,6 +52,8 @@ jobs:
         run: |
           rm .gitignore
           echo -c "node_modules/" >> .gitignore
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "chore: Update .gitignore"
 
