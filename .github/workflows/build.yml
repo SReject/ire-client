@@ -69,6 +69,7 @@ jobs:
 
       - name: Commit built files
         run: |
+          npm pkg delete devDependencies
           git add .
           git commit -m "build"
           git push -u origin release/v${{ needs.checkversion.outputs.version }}
