@@ -167,7 +167,12 @@ export default class IREClient {
         if (event === '') {
             throw new Error('event name must not be an empty string')
         }
-        this.$transport.send(JSON.stringify({type: 'event', id: 0, name: event, data }));
+        this.$transport.send(JSON.stringify({
+            type: 'event',
+            id: 0,
+            name: event,
+            data
+        }));
         return this;
     }
 
@@ -189,7 +194,12 @@ export default class IREClient {
         return new Promise((resolve, reject) => {
             const id = ++this.$pendingId;
             this.$pending.set(id, { resolve, reject });
-            (<IRETransport>this.$transport).send(JSON.stringify({ type: 'invoke', name, id, data: args }));
+            (<IRETransport>this.$transport).send(JSON.stringify({
+                type: 'invoke',
+                name,
+                id,
+                data: args
+            }));
         });
     }
 
@@ -260,12 +270,12 @@ export default class IREClient {
                     if (!processing.pending) {
                         return;
                     }
-                    (<IRETransport>this.$transport).send({
+                    (<IRETransport>this.$transport).send(JSON.stringify({
                         type: 'response',
                         name: 'error',
                         id,
                         data: err.message
-                    });
+                    }));
                 }
                 this.$processing.delete(processing);
 
