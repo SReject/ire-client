@@ -313,6 +313,11 @@ export default class IREClient {
         return this;
     }
 
+    /** Retrieves the currently hooked transport */
+    get transport() {
+        return this.$transport;
+    }
+
     /** Unhooks from the transport */
     unhook() {
         //eslint-disable-next-line @typescript-eslint/no-unused-vars
