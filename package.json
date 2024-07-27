@@ -1,12 +1,10 @@
 {
     "private": true,
-
     "name": "ire-client",
     "author": "SReject",
     "description": "IRE client",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "ISC",
-
     "type": "module",
     "scripts": {
         "lint": "eslint",
